@@ -96,26 +96,16 @@ class ViewerGL:
         GL.glUniformMatrix4fv(loc, 1, GL.GL_FALSE, self.cam.projection)
 
     def update_key(self):
-        wait = 0.4
 
-        if glfw.KEY_LEFT in self.touch and self.touch[glfw.KEY_LEFT] > 0 and self.objs[0].transformation.translation[0] < 4 :
+        if glfw.KEY_LEFT in self.touch and self.touch[glfw.KEY_LEFT] > 0 and self.objs[0].transformation.translation[0] < 8 :
             self.objs[0].transformation.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([2,0,0]))
-            while wait > 0:
-                time.sleep(0.1)
-                wait = wait - 0.1
-            wait=0.4
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([1,0,0]))
+
 
         if glfw.KEY_RIGHT in self.touch and self.touch[glfw.KEY_RIGHT] > 0 and self.objs[0].transformation.translation[0] > -8:
             self.objs[0].transformation.translation -= \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([2,0,0]))
-            while wait > 0:
-                time.sleep(0.1)
-                wait = wait - 0.1
-            wait=0.4
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([1,0,0]))
 
-
-        print(self.objs[0].transformation.translation[0])
 
         self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 
         self.cam.transformation.rotation_euler[pyrr.euler.index().yaw] += np.pi
