@@ -29,14 +29,14 @@ def main():
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(o)
 
-    m = Mesh()
+    r = Mesh()
     p0, p1, p2, p3 = [-25, 0, -25], [25, 0, -25], [25, 0, 25], [-25, 0, 25]
     n, c = [0, 1, 0], [1, 1, 1]
     t0, t1, t2, t3 = [0, 0], [1, 0], [1, 1], [0, 1]
-    m.vertices = np.array([[p0 + n + c + t0], [p1 + n + c + t1], [p2 + n + c + t2], [p3 + n + c + t3]], np.float32)
-    m.faces = np.array([[0, 1, 2], [0, 2, 3]], np.uint32)
-    texture = glutils.load_texture('grass.jpg')
-    o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, Transformation3D())
+    r.vertices = np.array([[p0 + n + c + t0], [p1 + n + c + t1], [p2 + n + c + t2], [p3 + n + c + t3]], np.float32)
+    r.faces = np.array([[0, 1, 2], [0, 2, 3]], np.uint32)
+    texture = glutils.load_texture('route.jpg')
+    o = Object3D(r.load_to_gpu(), r.get_nb_triangles(), program3d_id, texture, Transformation3D())
     viewer.add_object(o)
     
     
@@ -45,7 +45,7 @@ def main():
     # c.apply_matrix(pyrr.matrix44.create_from_scale([1, 5, 5, 1]))
     tr = Transformation3D()
     tr.translation.y = -np.amin(c.vertices, axis=0)[1]
-    tr.translation.z = -10
+    tr.translation.z = 10
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('font_cube.jpg')
     p = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
