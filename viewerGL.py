@@ -46,6 +46,11 @@ class ViewerGL:
                 if isinstance(obj, Object3D):
                     self.update_camera(obj.program)
                 obj.draw()
+                
+            self.objs[2].transformation.translation -= \
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,0.3]))
+
+
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)

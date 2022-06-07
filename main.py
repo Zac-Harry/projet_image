@@ -6,6 +6,7 @@ import numpy as np
 import OpenGL.GL as GL
 import pyrr
 import time
+import random
 
 def main():
     viewer = ViewerGL()
@@ -23,7 +24,7 @@ def main():
     m.apply_matrix(pyrr.matrix44.create_from_scale([2, 2, 2, 1]))
     tr = Transformation3D()
     tr.translation.y = -np.amin(m.vertices, axis=0)[1]
-    tr.translation.z = -5
+    tr.translation.z = -20
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('stegosaurus.jpg')
     o = Object3D(m.load_to_gpu(), m.get_nb_triangles(), program3d_id, texture, tr)
@@ -44,8 +45,9 @@ def main():
     c.normalize()
     # c.apply_matrix(pyrr.matrix44.create_from_scale([1, 5, 5, 1]))
     tr = Transformation3D()
+    tr.translation.x = random.randint(-8,8)
     tr.translation.y = -np.amin(c.vertices, axis=0)[1]
-    tr.translation.z = 10
+    tr.translation.z = 20
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('font_cube.jpg')
     p = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
