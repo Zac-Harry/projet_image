@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
+from cmath import sqrt
+from pickletools import read_decimalnl_long
 import OpenGL.GL as GL
 import glfw
 import pyrr
 import numpy as np
+from numpy.linalg import norm
 from cpe3d import Object3D
 import time
 
@@ -51,12 +54,35 @@ class ViewerGL:
                 pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,0.3]))
 
 
+            pos_cube=self.objs[2].transformation.translation
+            pos_dino=self.objs[0].transformation.translation 
+            
+            dif=norm(pos_dino-pos_cube)
+            print(dif)
+            if dif < 2 :                
+                print("Colision")
+
+
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
             glfw.swap_buffers(self.window)
             # gestion des évènements
             glfw.poll_events()
+    
+    
+    def Colision(self):   
+        pos_cube=self.objs[2].transformation.translation
+        pos_dino=self.objs[0].transformation.translation 
         
+        r_cube = norm(pos_cube)
+        r_dino = norm(pos_dino)
+        print(r_dino)
+        
+ 
+
+    
+    
+    
     def key_callback(self, win, key, scancode, action, mods):
         # sortie du programme si appui sur la touche 'échappement'
         if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
@@ -104,12 +130,12 @@ class ViewerGL:
 
         if glfw.KEY_LEFT in self.touch and self.touch[glfw.KEY_LEFT] > 0 and self.objs[0].transformation.translation[0] < 8 :
             self.objs[0].transformation.translation += \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([1,0,0]))
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2,0,0]))
 
 
         if glfw.KEY_RIGHT in self.touch and self.touch[glfw.KEY_RIGHT] > 0 and self.objs[0].transformation.translation[0] > -8:
             self.objs[0].transformation.translation -= \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([1,0,0]))
+                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0.2,0,0]))
 
 
         self.cam.transformation.rotation_euler = self.objs[0].transformation.rotation_euler.copy() 

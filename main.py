@@ -42,6 +42,7 @@ def main():
     
     
     c=Mesh.load_obj('cube.obj')
+    vao=c.load_to_gpu()
     c.normalize()
     # c.apply_matrix(pyrr.matrix44.create_from_scale([1, 5, 5, 1]))
     tr = Transformation3D()
@@ -50,7 +51,7 @@ def main():
     tr.translation.z = 20
     tr.rotation_center.z = 0.2
     texture = glutils.load_texture('font_cube.jpg')
-    p = Object3D(c.load_to_gpu(), c.get_nb_triangles(), program3d_id, texture, tr)
+    p = Object3D(vao, c.get_nb_triangles(), program3d_id, texture, tr)
     viewer.add_object(p)
 
 
