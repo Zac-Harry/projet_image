@@ -49,18 +49,17 @@ class ViewerGL:
                 if isinstance(obj, Object3D):
                     self.update_camera(obj.program)
                 obj.draw()
-                
-            self.objs[2].transformation.translation -= \
-                pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,0.1]))
-
-
-            pos_cube=self.objs[2].transformation.translation
-            pos_dino=self.objs[0].transformation.translation 
             
-            dif=norm(pos_dino-pos_cube)
-            print(dif)
-            if dif < 2 :                
-                print("Colision")
+ 
+            for i in range(2):    
+                self.objs[2+i].transformation.translation -= \
+                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,0.2]))
+                pos_cube=self.objs[2+i].transformation.translation
+                pos_dino=self.objs[0].transformation.translation                    
+                dif=norm(pos_dino-pos_cube)
+                if dif < 1.5 :
+                    print("Vous avez perdu !")                
+                    glfw.set_window_should_close(self.window, glfw.TRUE)
 
 
 
@@ -68,18 +67,7 @@ class ViewerGL:
             glfw.swap_buffers(self.window)
             # gestion des évènements
             glfw.poll_events()
-    
-    
-    def Colision(self):   
-        pos_cube=self.objs[2].transformation.translation
-        pos_dino=self.objs[0].transformation.translation 
         
-        r_cube = norm(pos_cube)
-        r_dino = norm(pos_dino)
-        print(r_dino)
-        
- 
-
     
     
     
