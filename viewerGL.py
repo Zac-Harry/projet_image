@@ -7,6 +7,7 @@ import glfw
 import pyrr
 import numpy as np
 from numpy.linalg import norm
+import numpy as np
 from cpe3d import Object3D
 import time
 
@@ -50,17 +51,31 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 obj.draw()
             
- 
-            for i in range(2):    
+        
+            for i in range(20):
+                s=0
+                v=0.2+np.log(i)*0.1   
                 self.objs[2+i].transformation.translation -= \
-                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,0.2]))
+                    pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,v]))
                 pos_cube=self.objs[2+i].transformation.translation
                 pos_dino=self.objs[0].transformation.translation                    
                 dif=norm(pos_dino-pos_cube)
                 if dif < 1.5 :
                     print("Vous avez perdu !")                
-                    glfw.set_window_should_close(self.window, glfw.TRUE)
+                    glfw.set_window_should_close(self.window, glfw.TRUE)                
+                for i in range(20):
+                    if self.objs[2+i].transformation.translation[2] < -20  :                       
+                        s += 1                     
+                   # print(s)
+                
+            if self.objs[2+i].transformation.translation[2] < -100 :
+                for i in range(20):
+                    self.objs[2+i].transformation.translation[2] += 150
+                            
 
+
+                        
+                               
 
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
