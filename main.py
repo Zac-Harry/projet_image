@@ -61,7 +61,7 @@ def main():
             viewer.add_object(p)
 
                
-    viewer.run()
+    viewer.run(viewer,programGUI_id)
 
 if __name__ == '__main__':
     main()

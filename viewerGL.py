@@ -2,14 +2,20 @@
 
 from cmath import sqrt
 from pickletools import read_decimalnl_long
+from re import X
 import OpenGL.GL as GL
 import glfw
 import pyrr
 import numpy as np
 from numpy.linalg import norm
 import numpy as np
-from cpe3d import Object3D
 import time
+
+
+import glutils
+from mesh import Mesh
+from cpe3d import Object3D, Camera, Transformation3D, Text
+
 
 class ViewerGL:
     def __init__(self):
@@ -37,13 +43,25 @@ class ViewerGL:
         self.objs = []
         self.touch = {}
 
-    def run(self):
+    def run(self,viewer,programGUI_id):
         # boucle d'affichage
+        t0=time.time()
+        t=0
+        vao = Text.initalize_geometry()
+        texture = glutils.load_texture('fontB.jpg')
+        o = Text('Timer : '+str(t), np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
+        viewer.add_object(o)  
+
+
         while not glfw.window_should_close(self.window):
             # nettoyage de la fenêtre : fond et profondeur
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
+            t=int((time.time()-t0)/3)
+ 
+                    
             self.update_key()
+            
 
             for obj in self.objs:
                 GL.glUseProgram(obj.program)
@@ -51,9 +69,9 @@ class ViewerGL:
                     self.update_camera(obj.program)
                 obj.draw()
             
-        
-            for i in range(50):
-                s=0
+            
+            for i in range(50):        
+                        
                 v=0.2+np.log(i)*0.1   
                 self.objs[2+i].transformation.translation -= \
                     pyrr.matrix33.apply_to_vector(pyrr.matrix33.create_from_eulers(self.objs[0].transformation.rotation_euler), pyrr.Vector3([0,0,v]))
@@ -62,19 +80,20 @@ class ViewerGL:
                 dif=norm(pos_dino-pos_cube)
                 if dif < 1.5 :
                     print("Vous avez perdu !")                
-                    glfw.set_window_should_close(self.window, glfw.TRUE)                
-                for i in range(50):
-                    if self.objs[2+i].transformation.translation[2] < -20  :                       
-                        s += 1                     
-                    print(s)
+                    glfw.set_window_should_close(self.window, glfw.TRUE)
+                          
                 
-            if self.objs[2+i].transformation.translation[2] < -300 :
+            self.objs.remove(o)
+            vao = Text.initalize_geometry()
+            texture = glutils.load_texture('fontB.jpg')
+            o = Text('Score : '+str(t), np.array([-0.8, 0.3], np.float32), np.array([0.8, 0.8], np.float32), vao, 2, programGUI_id, texture)
+            viewer.add_object(o)   
+                
+                       
+            if self.objs[2+i].transformation.translation[2] < -250 :
                 for i in range(50):
-                    self.objs[2+i].transformation.translation[2] += 400
+                    self.objs[2+i].transformation.translation[2] += 500
                             
-
-
-                                       
 
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
