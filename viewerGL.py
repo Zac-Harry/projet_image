@@ -52,7 +52,7 @@ class ViewerGL:
                 obj.draw()
             
         
-            for i in range(20):
+            for i in range(50):
                 s=0
                 v=0.2+np.log(i)*0.1   
                 self.objs[2+i].transformation.translation -= \
@@ -63,19 +63,18 @@ class ViewerGL:
                 if dif < 1.5 :
                     print("Vous avez perdu !")                
                     glfw.set_window_should_close(self.window, glfw.TRUE)                
-                for i in range(20):
+                for i in range(50):
                     if self.objs[2+i].transformation.translation[2] < -20  :                       
                         s += 1                     
-                   # print(s)
+                    print(s)
                 
-            if self.objs[2+i].transformation.translation[2] < -100 :
-                for i in range(20):
-                    self.objs[2+i].transformation.translation[2] += 150
+            if self.objs[2+i].transformation.translation[2] < -300 :
+                for i in range(50):
+                    self.objs[2+i].transformation.translation[2] += 400
                             
 
 
-                        
-                               
+                                       
 
 
             # changement de buffer d'affichage pour éviter un effet de scintillement
